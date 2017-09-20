@@ -5,7 +5,6 @@ import struct
 import pandas as pd
 
 
-
 class LogicLayer:
     """
     Class containing logic for interacting with the database.
@@ -14,15 +13,18 @@ class LogicLayer:
       dbName - Path to database (string)
     """
 
+    
     def __init__(self, dbName='students.db'):
         """
         Create a connection object and cursor for the specified database file 
         (default students.db)
         """
+        
         self.conn = sqlite3.connect(dbName)
         self.cursor = self.conn.cursor()
         self.colNames = '(first_name, last_name)'
 
+        
     def ConnectUI(self, TCP_IP='127.0.0.1', TCP_PORT=5005):
         """
         Create socket and wait for connection from UI.
@@ -110,6 +112,7 @@ class LogicLayer:
             self.cursor.execute(sqlStatement, formattedValues)
             self.conn.commit()
 
+            
     def UpdateStudent(self, id=None, values=None):
         """
         Update student with the given ID in the database.
@@ -126,6 +129,7 @@ class LogicLayer:
                                 formattedValues)
             self.conn.commit()
 
+            
     def RemoveStudent(self, id=None):
         """
         Remove student with the given ID from the database.
@@ -139,6 +143,7 @@ class LogicLayer:
             self.cursor.execute('DELETE FROM students WHERE id = ?',  secureID)
             self.conn.commit()
 
+            
     def GetStudents(self):
         """
         Return all students in the database.
@@ -151,6 +156,7 @@ class LogicLayer:
                                self.conn)
         return df
 
+    
 if __name__ == '__main__':
     
     ll = LogicLayer()

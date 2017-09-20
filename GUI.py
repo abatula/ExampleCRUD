@@ -7,10 +7,12 @@ import pandas as pd
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 
+
 class MainUI(QtWidgets.QMainWindow):
     """
     GUI for interacting with database logic.
     """
+
     
     def __init__(self, TCP_IP='127.0.0.1', TCP_PORT=5005):
         """
@@ -29,7 +31,7 @@ class MainUI(QtWidgets.QMainWindow):
         self.InitUI()
         self.ConnectServer(TCP_IP, TCP_PORT)
         self.UpdateStudentList()
-        
+
         
     def InitUI(self):
         """
@@ -54,7 +56,6 @@ class MainUI(QtWidgets.QMainWindow):
         self.labelFont = QtGui.QFont()
         self.labelFont.setPointSize(20)
 
-        
         self.studentList = QtWidgets.QListWidget(self)
         self.studentList.setFont(self.textFont)
 
@@ -76,6 +77,7 @@ class MainUI(QtWidgets.QMainWindow):
         self.deleteButton.clicked.connect(self.CreateDeleteWindow)
         self.studentList.itemClicked.connect(self.studentList.setCurrentItem)
 
+        # Layout
         buttonbox = QtWidgets.QHBoxLayout()
         buttonbox.addStretch(0)
         buttonbox.addWidget(self.addButton)
@@ -93,6 +95,7 @@ class MainUI(QtWidgets.QMainWindow):
         self.setCentralWidget(self.mainWindow)
         self.show()
 
+        
     def ConnectServer(self, TCP_IP='127.0.0.1', TCP_PORT=5005):
         """
         Connect to the server run by the database logic layer.
@@ -101,6 +104,7 @@ class MainUI(QtWidgets.QMainWindow):
           TCP_IP   - IP address
           TCP_PORT - Port
         """
+        
         clientInitMsg = b'Hello Logic'
         serverInitReply = b'Hello UI'
 
@@ -124,6 +128,7 @@ class MainUI(QtWidgets.QMainWindow):
             if buff == serverInitReply:
                 self.socketConnected = True
 
+                
     def UpdateStudentList(self):
         """
         Get all students from the database and display them in the GUI.
@@ -157,6 +162,7 @@ class MainUI(QtWidgets.QMainWindow):
         self.studentList.addItems(students)
         self.studentList.setCurrentRow(0)
 
+        
     def CreateAddWindow(self):
         """
         Create a pop-up window for adding a new student.
@@ -225,6 +231,7 @@ class MainUI(QtWidgets.QMainWindow):
         self.miniWindow.setLayout(mainVbox)
         self.miniWindow.show()
 
+        
     def CreateUpdateWindow(self):
         """
         Create a pop-up window for updating an existing student.
@@ -317,13 +324,11 @@ class MainUI(QtWidgets.QMainWindow):
         self.selectedID = int(self.studentDF.loc[selectedRow, 'ID'])
         studentName = ' '.join([self.studentDF.loc[selectedRow, 'First Name'],
                                 self.studentDF.loc[selectedRow, 'Last Name']])
-        
 
         # Labels
         textLabel = QtWidgets.QLabel('Delete %s from database?' % studentName)
         textLabel.setAlignment(QtCore.Qt.AlignCenter)
         textLabel.setFont(self.labelFont)
-
 
         # Buttons
         confirmButton = QtWidgets.QPushButton('Confirm')
@@ -352,7 +357,7 @@ class MainUI(QtWidgets.QMainWindow):
         self.miniWindow.setLayout(vbox)
         self.miniWindow.show()
 
-
+        
     def AddStudent(self):
         """
         Send message to server to add student to the database.
@@ -393,6 +398,7 @@ class MainUI(QtWidgets.QMainWindow):
         self.UpdateStudentList()
         self.miniWindow.close()
 
+        
     def UpdateStudent(self):
         """
         Send message to server to update a student in the database.
@@ -415,6 +421,7 @@ class MainUI(QtWidgets.QMainWindow):
         self.UpdateStudentList()
         self.miniWindow.close()
 
+        
     def PositionWindow(self, window):
         """
         Center display window on the screen.
@@ -443,8 +450,6 @@ class MainUI(QtWidgets.QMainWindow):
         self.sock.sendall(sizemsg)
         self.sock.sendall(sendmsg)
         
-        
-
 
 if __name__ == '__main__':
     
