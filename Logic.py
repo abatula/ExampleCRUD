@@ -55,6 +55,9 @@ class LogicLayer:
             except:
                 print('Error sending data')
 
+    def WaitForMessages(self):
+        buffSize = 4
+        
         # Continue looking for messages from client
         connectionOpen = True
         while connectionOpen:
@@ -63,7 +66,7 @@ class LogicLayer:
                 msgSize = struct.unpack('<i', buff)[0]
                 buff = self.clientSock.recv(msgSize)
                 connectionOpen = self.ProcessMessage(buff)
-
+                
 
     def ProcessMessage(self, msg_orig):
         """
@@ -161,3 +164,4 @@ if __name__ == '__main__':
     
     ll = LogicLayer()
     ll.ConnectUI()
+    ll.WaitForMessages()
